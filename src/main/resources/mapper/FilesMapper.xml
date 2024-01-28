@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.public_examination_planet.mapper.FilesMapper">
+
+    <resultMap id="BaseResultMap" type="com.gcu.public_examination_planet.domain.Files">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="fileUrl" column="file_url" jdbcType="VARCHAR"/>
+            <result property="md5" column="md5" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,file_url,md5
+    </sql>
+</mapper>
