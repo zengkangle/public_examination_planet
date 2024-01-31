@@ -12,16 +12,22 @@ import com.gcu.public_examination_planet.mapper.FilesMapper;
 import com.gcu.public_examination_planet.service.FilesService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URLEncoder;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -32,6 +38,8 @@ import java.nio.file.Paths;
 @Service
 public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files>
     implements FilesService{
+    @Value("${server.port}")
+    private String serverPort;
     @Value("${files.imageUpload.path}")
     private String imageRootPath;
     @Value("${files.videoUpload.path}")
@@ -64,7 +72,7 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files>
             System.out.println(fileUrl);
             return fileUrl;
         } else{
-            fileUrl ="http://localhost:8008/files/download/"+uploadFileName;
+            fileUrl ="http://localhost:"+serverPort+"/files/imageDownload/"+uploadFileName;
             Files files = new Files();
             files.setFileUrl(fileUrl);
             files.setMd5(md5);
@@ -163,16 +171,15 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files>
             throw new ServiceException("507","服务器出错自动重试该文件块上传");
         }
         if (chunk.getChunkNumber().equals(chunk.getTotalChunks())) {
-            // TODO 向数据库中保存上传信息
+            //  向数据库中保存上传信息
             String videoNameText = chunk.getFilename();
-            // 获取文件后缀，因此此后端代码可接收一切文件，上传格式前端限定
+            // 获取文件后缀
             String extName = videoNameText.substring(videoNameText.lastIndexOf(".") + 1).toLowerCase();
             String uuid = IdUtil.fastSimpleUUID();//定义文件的唯一标识
             String newVideoName = uuid + "." + extName;
             // 把已保存的原文件名文件改成新文件名
             try {
                 java.nio.file.Files.move(Paths.get(videoRootPath + "/" + videoNameText), Paths.get(videoRootPath + "/" + newVideoName));
-//                uploadFile.renameTo(newFile);
             }
             catch (IOException e) {
                 return e.toString();
@@ -189,7 +196,7 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files>
                 System.out.println(videoUrl);
                 return videoUrl;
             } else{
-                videoUrl ="http://localhost:8008/files/download/"+newVideoName;
+                videoUrl ="http://localhost:8009/files/playVideo/"+newVideoName;
                 Files files = new Files();
                 files.setFileUrl(videoUrl);
                 files.setMd5(md5);
@@ -202,6 +209,60 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files>
             return "ok";
         }
     }
+
+    //查询视频流的接口
+    public void playVideo(HttpServletRequest request, HttpServletResponse response,String videoName) throws Exception {
+        String videoUploadPath = videoRootPath + "\\" + videoName;
+        Path path = Paths.get(videoUploadPath);
+
+        if (java.nio.file.Files.exists(path)) {
+            String mimeType = java.nio.file.Files.probeContentType(path);
+            if (StringUtils.hasText(mimeType)) {
+                response.setContentType(mimeType);
+            }
+
+            // 设置支持部分请求（范围请求）的 'Accept-Ranges' 响应头
+            response.setHeader("Accept-Ranges", "bytes");
+
+            // 从请求头中获取请求的视频片段的范围（如果提供）
+            long startByte = 0;
+            long endByte = java.nio.file.Files.size(path) - 1;
+            String rangeHeader = request.getHeader("Range");
+            if (rangeHeader != null && rangeHeader.startsWith("bytes=")) {
+                String[] range = rangeHeader.substring(6).split("-");
+                startByte = Long.parseLong(range[0]);
+                if (range.length == 2) {
+                    endByte = Long.parseLong(range[1]);
+                }
+            }
+
+            // 设置 'Content-Length' 响应头，指示正在发送的视频片段的大小
+            long contentLength = endByte - startByte + 1;
+            response.setHeader("Content-Length", String.valueOf(contentLength));
+
+            // 设置 'Content-Range' 响应头，指示正在发送的视频片段的范围
+            response.setHeader("Content-Range", "bytes " + startByte + "-" + endByte + "/" + java.nio.file.Files.size(path));
+
+            // 设置响应状态为 '206 Partial Content'
+            response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+
+            // 使用 'RangeFileChannel' 进行视频片段的传输，以高效地只读取文件的请求部分
+            ServletOutputStream outputStream = response.getOutputStream();
+            try (
+                    RandomAccessFile file = new RandomAccessFile(path.toFile(), "r");
+                    FileChannel fileChannel = file.getChannel()
+            ) {
+                fileChannel.transferTo(startByte, contentLength, Channels.newChannel(outputStream));
+            } finally {
+                outputStream.close();
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        }
+
+    }
+
 }
 
 

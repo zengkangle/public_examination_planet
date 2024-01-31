@@ -1,4 +1,4 @@
-package com.example.canyon_gaming.Interceptor;
+package com.gcu.public_examination_planet.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
@@ -6,10 +6,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.canyon_gaming.common.Constants;
-import com.example.canyon_gaming.entity.User;
-import com.example.canyon_gaming.exception.ServiceException;
-import com.example.canyon_gaming.service.IUserService;
+import com.gcu.public_examination_planet.common.Constants;
+import com.gcu.public_examination_planet.domain.User;
+import com.gcu.public_examination_planet.exception.ServiceException;
+import com.gcu.public_examination_planet.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 public class JwtInterceptor implements HandlerInterceptor {
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -31,7 +31,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         if (StrUtil.isBlank(token)) {
-            throw new ServiceException(Constants.CODE_401.getCode(), "你还未登录");
+            throw new ServiceException(Constants.CODE_401.getCode(), "您还未登录，登录之后获取更多信息！");
         }
         String userId;
         try {
@@ -44,7 +44,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (user == null) {
             throw new ServiceException(Constants.CODE_401.getCode(), "用户不存在,请重新登录");
         }
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
+        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUserPassword())).build();
         try {
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {

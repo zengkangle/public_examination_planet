@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.public_examination_planet.mapper.WeiboCommentReplyMapper">
+
+    <resultMap id="BaseResultMap" type="com.gcu.public_examination_planet.domain.WeiboCommentReply">
+            <id property="weiboCommentReplyId" column="weibo_comment_reply_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="weiboCommentId" column="weibo_comment_id" jdbcType="INTEGER"/>
+            <result property="weiboCommentReplyTargetId" column="weibo_comment_reply_target_id" jdbcType="INTEGER"/>
+            <result property="weiboCommentReplyTime" column="weibo_comment_reply_time" jdbcType="TIMESTAMP"/>
+            <result property="weiboCommentReplyContent" column="weibo_comment_reply_content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        weibo_comment_reply_id,user_id,weibo_comment_id,
+        weibo_comment_reply_target_id,weibo_comment_reply_time,weibo_comment_reply_content
+    </sql>
+</mapper>

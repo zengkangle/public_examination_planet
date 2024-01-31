@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.public_examination_planet.mapper.WeiboImgMapper">
+
+    <resultMap id="BaseResultMap" type="com.gcu.public_examination_planet.domain.WeiboImg">
+            <id property="weiboImgId" column="weibo_img_id" jdbcType="INTEGER"/>
+            <result property="weiboId" column="weibo_id" jdbcType="INTEGER"/>
+            <result property="weiboImgUrl" column="weibo_img_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        weibo_img_id,weibo_id,weibo_img_url
+    </sql>
+</mapper>

@@ -5,10 +5,11 @@ import lombok.Data;
 /**
  * @author HealMe
  * @Description
- * @date 2024/1/27 下午 4:12
+ * @date 2024/1/29 上午 2:59
  **/
 @Data
-public class LoginUser {
+public class SimpleUser {
+
     /**
      * 用户id
      */
@@ -49,8 +50,5 @@ public class LoginUser {
      */
     private Integer userFreeWatch;
 
-    /**
-     * 用户登录token标识
-     */
-    private String token;
+
 }

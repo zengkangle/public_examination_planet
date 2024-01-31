@@ -1,4 +1,4 @@
-package com.example.canyon_gaming.exception;
+package com.gcu.public_examination_planet.exception;
 
 import lombok.Getter;
 

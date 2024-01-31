@@ -1,9 +1,8 @@
-package com.example.canyon_gaming.config;
+package com.gcu.public_examination_planet.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan({"com.example.canyon_gaming.config"})
+@MapperScan({"com.gcu.public_examination_planet.config"})
 public class MyBatisConfig<PaginationInterceptor> {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

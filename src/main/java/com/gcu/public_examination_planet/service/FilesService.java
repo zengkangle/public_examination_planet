@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -21,4 +22,6 @@ public interface FilesService extends IService<Files> {
     void imageDownload(@PathVariable String uploadFileName, HttpServletResponse response) throws Exception;
 
     String videoUpload(@ModelAttribute Chunk chunk, HttpServletResponse response);
+
+    void playVideo(HttpServletRequest request, HttpServletResponse response, String videoName)throws Exception;
 }

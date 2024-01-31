@@ -1,6 +1,6 @@
-package com.example.canyon_gaming.exception;
+package com.gcu.public_examination_planet.exception;
 
-import com.example.canyon_gaming.common.Result;
+import com.gcu.public_examination_planet.common.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

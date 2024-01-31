@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/public_examination_planet_schema?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    devtools:
+      restart:
+        enabled: true
+        additional-paths: src/main
+        exclude: static/**
+server:
+  port: 8009
+
+live-room:
+  open-live:
+    #直播服务器推流地址
+    server-address: rtmp://192.168.159.132:1935/live
+    flv-url: http://192.168.159.132:8080/live
+
+files:
+  imageUpload:
+    path: D:\Desktop\public_examination_planet_\public_examination_planet_images
+  videoUpload:
+    path: D:\Desktop\public_examination_planet_\public_examination_planet_videos
