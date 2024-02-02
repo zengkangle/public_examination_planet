@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户
@@ -57,9 +58,14 @@ public class User implements Serializable {
     private Integer teacherId;
 
     /**
-     * 普通用户每天免费观看直播的次数
+     * 用户创建时间
      */
-    private Integer userFreeWatch;
+    private Date userCreateTime;
+
+    /**
+     * 用户性别（1：男，0：女）
+     */
+    private Integer userGender;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -84,7 +90,8 @@ public class User implements Serializable {
             && (this.getUserEmail() == null ? other.getUserEmail() == null : this.getUserEmail().equals(other.getUserEmail()))
             && (this.getUserLevel() == null ? other.getUserLevel() == null : this.getUserLevel().equals(other.getUserLevel()))
             && (this.getTeacherId() == null ? other.getTeacherId() == null : this.getTeacherId().equals(other.getTeacherId()))
-            && (this.getUserFreeWatch() == null ? other.getUserFreeWatch() == null : this.getUserFreeWatch().equals(other.getUserFreeWatch()));
+            && (this.getUserCreateTime() == null ? other.getUserCreateTime() == null : this.getUserCreateTime().equals(other.getUserCreateTime()))
+            && (this.getUserGender() == null ? other.getUserGender() == null : this.getUserGender().equals(other.getUserGender()));
     }
 
     @Override
@@ -99,7 +106,8 @@ public class User implements Serializable {
         result = prime * result + ((getUserEmail() == null) ? 0 : getUserEmail().hashCode());
         result = prime * result + ((getUserLevel() == null) ? 0 : getUserLevel().hashCode());
         result = prime * result + ((getTeacherId() == null) ? 0 : getTeacherId().hashCode());
-        result = prime * result + ((getUserFreeWatch() == null) ? 0 : getUserFreeWatch().hashCode());
+        result = prime * result + ((getUserCreateTime() == null) ? 0 : getUserCreateTime().hashCode());
+        result = prime * result + ((getUserGender() == null) ? 0 : getUserGender().hashCode());
         return result;
     }
 
@@ -117,7 +125,8 @@ public class User implements Serializable {
         sb.append(", userEmail=").append(userEmail);
         sb.append(", userLevel=").append(userLevel);
         sb.append(", teacherId=").append(teacherId);
-        sb.append(", userFreeWatch=").append(userFreeWatch);
+        sb.append(", userCreateTime=").append(userCreateTime);
+        sb.append(", userGender=").append(userGender);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

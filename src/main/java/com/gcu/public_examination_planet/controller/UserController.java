@@ -48,4 +48,13 @@ public class UserController {
     public Result showWeiboList(@RequestParam("userId") Integer userId) {
         return Result.success(userService.selectUserById(userId));
     }
+
+    /**
+     * 分页获取用户列表
+     * @return
+     */
+    @GetMapping("/getUserList")
+    public Result getUserList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
+        return Result.success(userService.getUserListByPage(currentPage,pageSize));
+    }
 }

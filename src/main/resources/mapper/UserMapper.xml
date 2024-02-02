@@ -13,12 +13,14 @@
             <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
             <result property="userLevel" column="user_level" jdbcType="VARCHAR"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
-            <result property="userFreeWatch" column="user_free_watch" jdbcType="INTEGER"/>
+            <result property="userCreateTime" column="user_create_time" jdbcType="TIMESTAMP"/>
+            <result property="userGender" column="user_gender" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         user_id,user_name,user_phone,
         user_password,user_avatar_url,user_email,
-        user_level,teacher_id,user_free_watch
+        user_level,teacher_id,user_create_time,
+        user_gender
     </sql>
 </mapper>

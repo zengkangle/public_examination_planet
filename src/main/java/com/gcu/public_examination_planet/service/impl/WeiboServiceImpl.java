@@ -37,8 +37,6 @@ public class WeiboServiceImpl extends ServiceImpl<WeiboMapper, Weibo>
         //第一个参数为查询第几页,第二个参数为每页多少条记录
         Page<Weibo> page = new Page<>(currentPage, pageSize);
         IPage<Weibo> weiboIPage = weiboMapper.selectPage(page, pageWrapper);
-        //sk
-//        weiboIPage.setTotal(weiboIPage.getTotal());
         return weiboIPage;
     }
 

@@ -2,6 +2,8 @@ package com.gcu.public_examination_planet.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author HealMe
  * @Description
@@ -18,6 +20,11 @@ public class LoginUser {
      * 昵称
      */
     private String userName;
+
+    /**
+     * 用户性别（1：男，0：女）
+     */
+    private Integer userGender;
 
     /**
      * 用户的手机（登录的账号）
@@ -45,9 +52,9 @@ public class LoginUser {
     private Integer teacherId;
 
     /**
-     * 普通用户每天免费观看直播的次数
+     * 用户创建时间
      */
-    private Integer userFreeWatch;
+    private Date userCreateTime;
 
     /**
      * 用户登录token标识
