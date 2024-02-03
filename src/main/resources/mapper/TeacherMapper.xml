@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.public_examination_planet.mapper.TeacherMapper">
+
+    <resultMap id="BaseResultMap" type="com.gcu.public_examination_planet.domain.Teacher">
+            <id property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="teacherOutline" column="teacher_outline" jdbcType="VARCHAR"/>
+            <result property="teacherDescribe" column="teacher_describe" jdbcType="VARCHAR"/>
+            <result property="teacherRate" column="teacher_rate" jdbcType="DOUBLE"/>
+            <result property="isShow" column="is_show" jdbcType="TINYINT"/>
+            <result property="liveCode" column="live_code" jdbcType="VARCHAR"/>
+            <result property="teacherImgUrl" column="teacher_img_url" jdbcType="VARCHAR"/>
+            <result property="teacherRateCount" column="teacher_rate_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        teacher_id,teacher_outline,teacher_describe,
+        teacher_rate,is_show,live_code,
+        teacher_img_url,teacher_rate_count
+    </sql>
+</mapper>

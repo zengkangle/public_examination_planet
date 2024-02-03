@@ -93,6 +93,12 @@
       <artifactId>alipay-sdk-java</artifactId>
       <version>4.22.110.ALL</version>
     </dependency>
+
+    <dependency>
+      <groupId>xin.altitude.cms</groupId>
+      <artifactId>ucode-cms-common</artifactId>
+      <version>1.5.9.2</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

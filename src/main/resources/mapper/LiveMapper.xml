@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.public_examination_planet.mapper.LiveMapper">
+
+    <resultMap id="BaseResultMap" type="com.gcu.public_examination_planet.domain.Live">
+            <id property="liveId" column="live_id" jdbcType="INTEGER"/>
+            <result property="liveTitle" column="live_title" jdbcType="VARCHAR"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="liveStatus" column="live_status" jdbcType="VARCHAR"/>
+            <result property="liveType" column="live_type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        live_id,live_title,teacher_id,
+        live_status,live_type
+    </sql>
+</mapper>
