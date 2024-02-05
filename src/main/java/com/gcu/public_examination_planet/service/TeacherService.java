@@ -12,4 +12,5 @@ import com.gcu.public_examination_planet.dto.TeacherForShow;
 */
 public interface TeacherService extends IService<Teacher> {
     IPage<TeacherForShow> getTeacherListByPage(Integer currentPage, Integer pageSize);
+    IPage<TeacherForShow> getSimpleTeacherListByPage(Integer currentPage, Integer pageSize);
 }

@@ -1,6 +1,5 @@
 package com.gcu.public_examination_planet.dto;
 
-import com.gcu.public_examination_planet.domain.Tag;
 import com.gcu.public_examination_planet.domain.Teacher;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class TeacherForShow extends Teacher{
     /**
+     * 用户id
+     */
+    private Integer userId;
+
+    /**
      * 昵称
      */
     private String userName;
@@ -29,7 +33,7 @@ public class TeacherForShow extends Teacher{
     /**
      * 标签集合
      */
-    private List<Tag> tags;
+    private List<String> tags;
 
     public TeacherForShow(Teacher teacher) {
         super(teacher);

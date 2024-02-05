@@ -32,6 +32,17 @@ public class TeacherController {
     }
 
     /**
+     * 分页获取教师列表(师资页面)
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getSimpleTeacherList")
+    public Result getSimpleTeacherList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
+        return Result.success(teacherService.getSimpleTeacherListByPage(currentPage,pageSize));
+    }
+
+    /**
      * 根据教师id获取教师信息
      * @param teacherId
      * @return

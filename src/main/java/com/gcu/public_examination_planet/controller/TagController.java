@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author HealMe
@@ -24,6 +26,11 @@ public class TagController {
 
     @GetMapping("/getTagsById")
     public Result getTagsById(@RequestParam("teacherId") Integer teacherId) {
-        return Result.success(tagService.list(new QueryWrapper<Tag>().eq("teacher_id",teacherId)));
+        List<Tag> tagList = tagService.list(new QueryWrapper<Tag>().eq("teacher_id", teacherId));
+        List<String> tags = new ArrayList<String>();
+        for (Tag tag : tagList) {
+            tags.add(tag.getTagContent());
+        }
+        return Result.success(tags);
     }
 }

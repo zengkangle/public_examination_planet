@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import xin.altitude.cms.common.util.EntityUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,13 +42,39 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         Set<Integer> teacherIds = EntityUtils.toSet(teacherForShowIPage.getRecords(), TeacherForShow::getTeacherId);
         if (teacherIds.size()>0){
             List<Tag> tagList = tagService.list(new QueryWrapper<Tag>().in("teacher_id", teacherIds));
-            Map<Integer, List<Tag>> map = EntityUtils.groupBy(tagList, Tag::getTeacherId);
+            Map<Integer, List<Tag>> tagMap = EntityUtils.groupBy(tagList, Tag::getTeacherId);
             List<User> userList = userService.list(new QueryWrapper<User>().in("teacher_id", teacherIds));
             Map<Integer, User> userMap = EntityUtils.toMap(userList, User::getTeacherId, e -> e);
             for (TeacherForShow teacherForShow : teacherForShowIPage.getRecords()) {
-                teacherForShow.setTags(map.get(teacherForShow.getTeacherId()));
+                List<Tag> teacherTagList = tagMap.get(teacherForShow.getTeacherId());
+                ArrayList<String> tags = new ArrayList<>();
+                if (teacherTagList != null && teacherTagList.size()>0){
+                    for (Tag tag : tagMap.get(teacherForShow.getTeacherId())) {
+                        tags.add(tag.getTagContent());
+                    }
+                }
+                teacherForShow.setTags(tags);
                 User user = userMap.get(teacherForShow.getTeacherId());
-                System.out.println(user);
+                teacherForShow.setUserId(user.getUserId());
+                teacherForShow.setUserName(user.getUserName());
+                teacherForShow.setUserGender(user.getUserGender());
+            }
+        }
+        return teacherForShowIPage;
+    }
+
+    public IPage<TeacherForShow> getSimpleTeacherListByPage(Integer currentPage, Integer pageSize){
+        QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
+        wrapper.eq("is_show",1);
+        Page<Teacher> teacherPage = this.page(new Page<>(currentPage, pageSize), wrapper);
+        IPage<TeacherForShow> teacherForShowIPage = EntityUtils.toPage(teacherPage, TeacherForShow::new);
+        Set<Integer> teacherIds = EntityUtils.toSet(teacherForShowIPage.getRecords(), TeacherForShow::getTeacherId);
+        if (teacherIds.size()>0){
+            List<User> userList = userService.list(new QueryWrapper<User>().in("teacher_id", teacherIds));
+            Map<Integer, User> userMap = EntityUtils.toMap(userList, User::getTeacherId, e -> e);
+            for (TeacherForShow teacherForShow : teacherForShowIPage.getRecords()) {
+                User user = userMap.get(teacherForShow.getTeacherId());
+                teacherForShow.setUserId(user.getUserId());
                 teacherForShow.setUserName(user.getUserName());
                 teacherForShow.setUserGender(user.getUserGender());
             }

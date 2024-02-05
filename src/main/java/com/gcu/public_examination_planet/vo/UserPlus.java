@@ -37,6 +37,11 @@ public class UserPlus extends User {
     private String teacherImgUrl;
 
     /**
+     * 是否在师资列表中进行展示
+     */
+    private Integer isShow;
+
+    /**
      * 教师标签
      */
     private List<String> tags;

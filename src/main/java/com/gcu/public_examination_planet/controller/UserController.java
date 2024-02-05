@@ -3,6 +3,7 @@ package com.gcu.public_examination_planet.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.public_examination_planet.common.Result;
 import com.gcu.public_examination_planet.domain.Live;
 import com.gcu.public_examination_planet.domain.Tag;
@@ -64,7 +65,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/getUserMsg")
-    public Result showWeiboList(@RequestParam("userId") Integer userId) {
+    public Result getUserMsg(@RequestParam("userId") Integer userId) {
         return Result.success(userService.selectUserById(userId));
     }
 
@@ -97,11 +98,13 @@ public class UserController {
         User user = new User();
         BeanUtil.copyProperties(userPlus,user);
         userService.updateById(user);
-        if ("teacher".equals(userPlus.getUserLevel())){
+        if (userPlus.getTeacherId() != null){
             Teacher teacher = new Teacher();
             BeanUtil.copyProperties(userPlus,teacher);
+            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+userPlus);
             teacherService.updateById(teacher);
-            if (userPlus.getTags().size()>0){
+            if (userPlus.getTags()!=null && userPlus.getTags().size()>0){
+                tagService.remove(new QueryWrapper<Tag>().eq("teacher_id",userPlus.getTeacherId()));
                 for (String tagStr : userPlus.getTags()) {
                     Tag tag = new Tag();
                     tag.setTagContent(tagStr);
@@ -111,7 +114,7 @@ public class UserController {
                 }
             }
         }
-        return Result.success("");
+        return Result.success("success");
     }
 
     /**
