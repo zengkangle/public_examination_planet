@@ -14,7 +14,7 @@
             <result property="courseStatus" column="course_status" jdbcType="VARCHAR"/>
             <result property="courseTitle" column="course_title" jdbcType="VARCHAR"/>
             <result property="courseRate" column="course_rate" jdbcType="DOUBLE"/>
-            <result property="coursePage" column="course_page" jdbcType="INTEGER"/>
+            <result property="coursePageAmount" column="course_page_amount" jdbcType="INTEGER"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="courseRateCount" column="course_rate_count" jdbcType="INTEGER"/>
     </resultMap>
@@ -23,6 +23,6 @@
         course_id,course_outline,create_time,
         course_order,course_price,course_type,
         course_status,course_title,course_rate,
-        course_page,teacher_id,course_rate_count
+        course_page_amount,teacher_id,course_rate_count
     </sql>
 </mapper>

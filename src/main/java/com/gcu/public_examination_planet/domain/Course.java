@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.Date;
  */
 @TableName(value ="course")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course implements Serializable {
     /**
      * 课程id
@@ -65,7 +69,7 @@ public class Course implements Serializable {
     /**
      * 课程包含的视频数量
      */
-    private Integer coursePage;
+    private Integer coursePageAmount;
 
     /**
      * 任教老师id
@@ -79,6 +83,21 @@ public class Course implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Course(Course course) {
+        this.courseId = course.getCourseId();
+        this.courseOutline = course.getCourseOutline();
+        this.createTime = course.getCreateTime();
+        this.courseOrder = course.getCourseOrder();
+        this.coursePrice = course.getCoursePrice();
+        this.courseType = course.getCourseType();
+        this.courseStatus = course.getCourseStatus();
+        this.courseTitle = course.getCourseTitle();
+        this.courseRate = course.getCourseRate();
+        this.coursePageAmount = course.getCoursePageAmount();
+        this.teacherId = course.getTeacherId();
+        this.courseRateCount = course.getCourseRateCount();
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -101,7 +120,7 @@ public class Course implements Serializable {
             && (this.getCourseStatus() == null ? other.getCourseStatus() == null : this.getCourseStatus().equals(other.getCourseStatus()))
             && (this.getCourseTitle() == null ? other.getCourseTitle() == null : this.getCourseTitle().equals(other.getCourseTitle()))
             && (this.getCourseRate() == null ? other.getCourseRate() == null : this.getCourseRate().equals(other.getCourseRate()))
-            && (this.getCoursePage() == null ? other.getCoursePage() == null : this.getCoursePage().equals(other.getCoursePage()))
+            && (this.getCoursePageAmount() == null ? other.getCoursePageAmount() == null : this.getCoursePageAmount().equals(other.getCoursePageAmount()))
             && (this.getTeacherId() == null ? other.getTeacherId() == null : this.getTeacherId().equals(other.getTeacherId()))
             && (this.getCourseRateCount() == null ? other.getCourseRateCount() == null : this.getCourseRateCount().equals(other.getCourseRateCount()));
     }
@@ -119,7 +138,7 @@ public class Course implements Serializable {
         result = prime * result + ((getCourseStatus() == null) ? 0 : getCourseStatus().hashCode());
         result = prime * result + ((getCourseTitle() == null) ? 0 : getCourseTitle().hashCode());
         result = prime * result + ((getCourseRate() == null) ? 0 : getCourseRate().hashCode());
-        result = prime * result + ((getCoursePage() == null) ? 0 : getCoursePage().hashCode());
+        result = prime * result + ((getCoursePageAmount() == null) ? 0 : getCoursePageAmount().hashCode());
         result = prime * result + ((getTeacherId() == null) ? 0 : getTeacherId().hashCode());
         result = prime * result + ((getCourseRateCount() == null) ? 0 : getCourseRateCount().hashCode());
         return result;
@@ -140,7 +159,7 @@ public class Course implements Serializable {
         sb.append(", courseStatus=").append(courseStatus);
         sb.append(", courseTitle=").append(courseTitle);
         sb.append(", courseRate=").append(courseRate);
-        sb.append(", coursePage=").append(coursePage);
+        sb.append(", coursePageAmount=").append(coursePageAmount);
         sb.append(", teacherId=").append(teacherId);
         sb.append(", courseRateCount=").append(courseRateCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);

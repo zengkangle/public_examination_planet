@@ -69,8 +69,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="Course" />
-                  <option name="tableName" value="course" />
+                  <option name="className" value="Barrage" />
+                  <option name="tableName" value="barrage" />
                 </TableUIInfo>
               </list>
             </option>
