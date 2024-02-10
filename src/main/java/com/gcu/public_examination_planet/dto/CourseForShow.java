@@ -21,6 +21,31 @@ public class CourseForShow extends Course {
      */
     private List<String> tags;
 
+    /**
+     * 昵称
+     */
+    private String userName;
+
+    /**
+     * 用户头像
+     */
+    private String userAvatarUrl;
+
+    /**
+     * 教师详细描述
+     */
+    private String teacherDescribe;
+
+    /**
+     * 用户给改教师的评价平均分
+     */
+    private Double teacherRate;
+
+    /**
+     * 评价人数
+     */
+    private Integer teacherRateCount;
+
     public CourseForShow(Course course) {
         super(course);
     }

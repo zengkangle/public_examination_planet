@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.Date;
  */
 @TableName(value ="video")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Video implements Serializable {
     /**
      * 视频id
@@ -51,6 +55,16 @@ public class Video implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    public Video(Video video) {
+        this.videoId = video.getVideoId();
+        this.videoTitle = video.getVideoTitle();
+        this.videoUrl = video.getVideoUrl();
+        this.courseId = video.getCourseId();
+        this.videoStatus = video.getVideoStatus();
+        this.coursePage = video.getCoursePage();
+        this.createTime = video.getCreateTime();
+    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -34,7 +34,6 @@ public class WeiboServiceImpl extends ServiceImpl<WeiboMapper, Weibo>
     public IPage<Weibo> selectByPage(Integer currentPage, Integer pageSize) {
         QueryWrapper<Weibo> pageWrapper = new QueryWrapper<>();
         pageWrapper.orderByDesc("weibo_post_time");
-        //第一个参数为查询第几页,第二个参数为每页多少条记录
         Page<Weibo> page = new Page<>(currentPage, pageSize);
         IPage<Weibo> weiboIPage = weiboMapper.selectPage(page, pageWrapper);
         return weiboIPage;

@@ -6,8 +6,12 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.gcu.public_examination_planet.common.AliPay;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.public_examination_planet.common.AliPayConfig;
+import com.gcu.public_examination_planet.domain.Course;
+import com.gcu.public_examination_planet.domain.Orders;
+import com.gcu.public_examination_planet.service.CourseService;
+import com.gcu.public_examination_planet.service.OrdersService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +33,7 @@ import java.util.Map;
 @RequestMapping("/alipay")
 public class AliPayController {
 
+    //买家账号：yjjdgf7849@sandbox.com
     private static final String GATEWAY_URL = "https://openapi-sandbox.dl.alipaydev.com/gateway.do";
     private static final String FORMAT = "JSON";
     private static final String CHARSET = "UTF-8";
@@ -37,11 +43,17 @@ public class AliPayController {
     @Resource
     private AliPayConfig aliPayConfig;
 
-//    @Resource
-//    private OrdersMapper ordersMapper;
+    @Resource
+    private OrdersService ordersService;
 
-    @GetMapping("/pay") // &subject=xxx&traceNo=xxx&totalAmount=xxx
-    public void pay(AliPay aliPay, HttpServletResponse httpResponse) throws Exception {
+    @Resource
+    private CourseService courseService;
+
+    @GetMapping("/pay") // ?orderId=**
+    public void pay(String orderId, HttpServletResponse httpResponse) throws Exception {
+
+        Orders orders = ordersService.getById(orderId);
+
         // 1. 创建Client，通用SDK提供的Client，负责调用支付宝的API
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(),
                 aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
@@ -49,10 +61,11 @@ public class AliPayController {
         // 2. 创建 Request并设置Request参数
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 发送请求的 Request类
         request.setNotifyUrl(aliPayConfig.getNotifyUrl());
+        request.setReturnUrl(aliPayConfig.getReturnUrl());
         JSONObject bizContent = new JSONObject();
-        bizContent.set("out_trade_no", aliPay.getTraceNo());  // 我们自己生成的订单编号
-        bizContent.set("total_amount", aliPay.getTotalAmount()); // 订单的总金额
-        bizContent.set("subject", aliPay.getSubject());   // 支付的名称
+        bizContent.set("out_trade_no", orders.getOrderCode());  // 订单编号
+        bizContent.set("total_amount", orders.getOrderPrice()); // 订单的总金额
+        bizContent.set("subject", orders.getOrderName());   // 支付的名称
         bizContent.set("product_code", "FAST_INSTANT_TRADE_PAY");  // 固定配置
         request.setBizContent(bizContent.toString());
 
@@ -78,12 +91,7 @@ public class AliPayController {
             Map<String, String[]> requestParams = request.getParameterMap();
             for (String name : requestParams.keySet()) {
                 params.put(name, request.getParameter(name));
-                // System.out.println(name + " = " + request.getParameter(name));
             }
-
-            String outTradeNo = params.get("out_trade_no");
-            String gmtPayment = params.get("gmt_payment");
-            String alipayTradeNo = params.get("trade_no");
 
             String sign = params.get("sign");
             String content = AlipaySignature.getSignCheckContentV1(params);
@@ -100,17 +108,15 @@ public class AliPayController {
                 System.out.println("买家付款时间: " + params.get("gmt_payment"));
                 System.out.println("买家付款金额: " + params.get("buyer_pay_amount"));
 
-                // 查询订单
-//                QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
-//                queryWrapper.eq("order_id", outTradeNo);
-//                Orders orders = ordersMapper.selectOne(queryWrapper);
-//
-//                if (orders != null) {
-//                    orders.setAlipayNo(alipayTradeNo);
-//                    orders.setPayTime(new Date());
-//                    orders.setState("已支付");
-//                    ordersMapper.updateById(orders);
-//                }
+                Orders orders = new Orders();
+                orders.setOrderStatus("已支付");
+                orders.setAlipayCode(params.get("trade_no"));
+                orders.setPayTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(params.get("gmt_payment")));
+                ordersService.update(orders,new QueryWrapper<Orders>().eq("order_code",params.get("out_trade_no")));
+                Orders one = ordersService.getOne(new QueryWrapper<Orders>().eq("order_code", params.get("out_trade_no")));
+                Course course = courseService.getById(one.getCourseId());
+                course.setCourseOrder(course.getCourseOrder()+1);
+                courseService.updateById(course);
             }
         }
         return "success";

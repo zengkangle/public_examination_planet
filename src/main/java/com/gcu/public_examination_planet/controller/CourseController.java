@@ -50,16 +50,28 @@ public class CourseController {
     }
 
     /**
-     * 分页获取课程列表
+     * 分页获取购买课程列表
      * @param currentPage
      * @param pageSize
      * @return
      */
     @GetMapping("/getCourseList")
-    public Result getCourseList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
-        return Result.success(courseService.getCourseListByPage(currentPage,pageSize));
+    public Result getCourseList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,String courseType) {
+        return Result.success(courseService.getCourseListByPage(currentPage,pageSize,courseType));
     }
 
+    /**
+     * 分页获取我的课程列表
+     * @param currentPage
+     * @param pageSize
+     * @param courseType
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getMyCourseList")
+    public Result getMyCourseList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,String courseType, Integer userId) {
+        return Result.success(courseService.getMyCourseListByPage(currentPage,pageSize,courseType,userId));
+    }
     /**
      * 编辑课程信息
      * @param courseForShow
@@ -82,6 +94,17 @@ public class CourseController {
                 tagService.save(tag);
             }
         }
+        return Result.success("success");
+    }
+
+    /**
+     * 修改课程状态
+     * @param course
+     * @return
+     */
+    @PostMapping("/updateCourseStatus")
+    public Result updateCourseStatus(@RequestBody Course course) {
+        courseService.updateById(course);
         return Result.success("success");
     }
 }
