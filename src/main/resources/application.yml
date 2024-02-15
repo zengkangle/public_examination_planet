@@ -34,8 +34,9 @@ alipay:
 live-room:
   open-live:
     #直播服务器推流地址
-    server-address: rtmp://192.168.159.132:1935/live
-    flv-url: http://192.168.159.132:8080/live
+    server-address: rtmp://192.168.159.128:1935/live/
+    #直播前端播放器地址
+    flv-url: http://192.168.159.128:8080/live/
 
 files:
   imageUpload:

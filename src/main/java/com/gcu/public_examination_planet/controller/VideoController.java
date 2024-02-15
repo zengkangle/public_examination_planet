@@ -87,6 +87,6 @@ public class VideoController {
     public Result getFirstVideo(@RequestParam("courseId") Integer courseId) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
         wrapper.eq("course_id",courseId).eq("video_status","通过").orderByAsc("course_page").last("limit 1");
-        return Result.success(videoService.getOne(wrapper).getVideoUrl());
+        return Result.success(videoService.getOne(wrapper));
     }
 }

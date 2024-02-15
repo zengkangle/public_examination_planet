@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * 直播
@@ -13,6 +16,8 @@ import lombok.Data;
  */
 @TableName(value ="live")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Live implements Serializable {
     /**
      * 直播id
@@ -42,6 +47,14 @@ public class Live implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Live(Live live) {
+        this.liveId = live.getLiveId();
+        this.liveTitle = live.getLiveTitle();
+        this.teacherId = live.getTeacherId();
+        this.liveStatus = live.getLiveStatus();
+        this.liveType = live.getLiveType();
+    }
 
     @Override
     public boolean equals(Object that) {
