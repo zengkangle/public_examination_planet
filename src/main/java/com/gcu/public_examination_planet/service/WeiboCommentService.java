@@ -2,6 +2,7 @@ package com.gcu.public_examination_planet.service;
 
 import com.gcu.public_examination_planet.domain.WeiboComment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.public_examination_planet.dto.WeiboCommentForShow;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface WeiboCommentService extends IService<WeiboComment> {
     void saveComment(WeiboComment weiboComment);
 
-    List<WeiboComment> getCommentListByWeiboId(Integer weiboId);
+    List<WeiboCommentForShow> getCommentListByWeiboId(Integer weiboId);
 
     void increaseById(Integer weiboCommentId);
 

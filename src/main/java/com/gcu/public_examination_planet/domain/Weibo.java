@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 微博
@@ -14,6 +17,8 @@ import lombok.Data;
  */
 @TableName(value ="weibo")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Weibo implements Serializable {
     /**
      * 微博id
@@ -48,6 +53,15 @@ public class Weibo implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Weibo(Weibo weibo) {
+        this.weiboId = weibo.getWeiboId();
+        this.weiboContent = weibo.getWeiboContent();
+        this.userId = weibo.getUserId();
+        this.weiboPostTime = weibo.getWeiboPostTime();
+        this.weiboCommentAmount = weibo.getWeiboCommentAmount();
+        this.weiboHaveImg = weibo.getWeiboHaveImg();
+    }
 
     @Override
     public boolean equals(Object that) {

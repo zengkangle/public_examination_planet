@@ -64,6 +64,7 @@ public class ChatEndpoint {
         Integer liveId = Integer.parseInt((String) messageObject.get("liveId"));
         String userName = (String)messageObject.get("userName");
         String msgContent = (String)messageObject.get("msgContent");
+        System.out.println(msgContent);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setMessageType("user");
         sendMessage.setUserName(userName);

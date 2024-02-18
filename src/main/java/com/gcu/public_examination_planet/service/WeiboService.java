@@ -3,6 +3,7 @@ package com.gcu.public_examination_planet.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gcu.public_examination_planet.domain.Weibo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.public_examination_planet.dto.WeiboForShow;
 
 /**
  * @author HealMe
@@ -11,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface WeiboService extends IService<Weibo> {
     Integer save(String text, Integer userId, Integer weiboHaveImg);
-    IPage<Weibo> selectByPage(Integer currentPage, Integer pageSize);
+    IPage<WeiboForShow> selectByPage(Integer currentPage, Integer pageSize);
 
     void increasetById(Integer weiboId);
 }
