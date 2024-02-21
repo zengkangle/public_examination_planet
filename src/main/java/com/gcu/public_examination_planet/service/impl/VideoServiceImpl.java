@@ -28,8 +28,13 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
     implements VideoService{
     @Resource
     CourseService courseService;
-    public IPage<VideoForShow> getCheckVideoList(Integer currentPage, Integer pageSize){
+    public IPage<VideoForShow> getCheckVideoList(Integer currentPage, Integer pageSize, Integer teacherId){
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        if (teacherId != null){
+            List<Course> courseList = courseService.list(new QueryWrapper<Course>().eq("teacher_id", teacherId));
+            Set<Integer> courseIds = EntityUtils.toSet(courseList, Course::getCourseId);
+            wrapper.in("course_id",courseIds);
+        }
         wrapper.orderByDesc("create_time");
         Page<Video> videoPage = this.page(new Page<>(currentPage, pageSize), wrapper);
         IPage<VideoForShow> videoForShowIPage = EntityUtils.toPage(videoPage, VideoForShow::new);

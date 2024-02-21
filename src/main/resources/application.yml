@@ -2,6 +2,8 @@ server:
   port: 8009
 
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,9 +29,10 @@ alipay:
   # 支付宝公钥
   alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkvZoSjczVp+QHV97KjUnYt/xVkknXl4uM1p0NFs4PjlC8Lqsl5uYdRWHPk9QXdYjHWFuYWTA+JZFFlkypzREhk4zM5+AXsIztuwUV9cFlBKcF3vGK3mR1lNiaM8Ea7nEVC3ulDTQ36q/A8BQvksdnhhKsvtph47m813upWCFxyPb7nvDD34R8mQkGwpI/QclDTBrbULcZKojHHRlUHl1RTXUwGYOy8O4IK338MUreiXMP7eBYhq21Jd9c9FKR0itSJLsAGAv3EM4vgDmRkq/bNB9plfKWIWlwEefx39lKxF9Inl18xENR2blw2wRFmfqTtyi1m+BSt/DZLh/Ni6c/wIDAQAB
   #支付宝通知本地的接口
-  notifyUrl: http://mtc6xi.natappfree.cc/alipay/notify
+  notifyUrl: http://pxhbdc.natappfree.cc/alipay/notify
   #支付宝回调地址
   returnUrl: http://localhost:5173/base/manage/myOrderOfManage
+  returnUrl2: http://localhost:5173/starter/login
 
 live-room:
   open-live:

@@ -10,8 +10,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.public_examination_planet.common.AliPayConfig;
 import com.gcu.public_examination_planet.domain.Course;
 import com.gcu.public_examination_planet.domain.Orders;
+import com.gcu.public_examination_planet.domain.User;
 import com.gcu.public_examination_planet.service.CourseService;
 import com.gcu.public_examination_planet.service.OrdersService;
+import com.gcu.public_examination_planet.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +51,9 @@ public class AliPayController {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private UserService userService;
+
     @GetMapping("/pay") // ?orderId=**
     public void pay(String orderId, HttpServletResponse httpResponse) throws Exception {
 
@@ -61,7 +66,11 @@ public class AliPayController {
         // 2. 创建 Request并设置Request参数
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 发送请求的 Request类
         request.setNotifyUrl(aliPayConfig.getNotifyUrl());
-        request.setReturnUrl(aliPayConfig.getReturnUrl());
+        if (orders.getOrderType().equals("vip")){
+            request.setReturnUrl(aliPayConfig.getReturnUrl2());
+        } else {
+            request.setReturnUrl(aliPayConfig.getReturnUrl());
+        }
         JSONObject bizContent = new JSONObject();
         bizContent.set("out_trade_no", orders.getOrderCode());  // 订单编号
         bizContent.set("total_amount", orders.getOrderPrice()); // 订单的总金额
@@ -114,9 +123,16 @@ public class AliPayController {
                 orders.setPayTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(params.get("gmt_payment")));
                 ordersService.update(orders,new QueryWrapper<Orders>().eq("order_code",params.get("out_trade_no")));
                 Orders one = ordersService.getOne(new QueryWrapper<Orders>().eq("order_code", params.get("out_trade_no")));
-                Course course = courseService.getById(one.getCourseId());
-                course.setCourseOrder(course.getCourseOrder()+1);
-                courseService.updateById(course);
+                if (one.getOrderType().equals("course")){
+                    Course course = courseService.getById(one.getCourseId());
+                    course.setCourseOrder(course.getCourseOrder()+1);
+                    courseService.updateById(course);
+                }else {
+                    User user = new User();
+                    user.setUserId(one.getUserId());
+                    user.setUserLevel("vip");
+                    userService.updateById(user);
+                }
             }
         }
         return "success";

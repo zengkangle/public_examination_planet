@@ -11,5 +11,5 @@ import com.gcu.public_examination_planet.dto.VideoForShow;
 * @createDate 2024-02-07 03:23:57
 */
 public interface VideoService extends IService<Video> {
-    IPage<VideoForShow> getCheckVideoList(Integer currentPage,Integer pageSize);
+    IPage<VideoForShow> getCheckVideoList(Integer currentPage,Integer pageSize, Integer teacherId);
 }

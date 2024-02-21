@@ -38,10 +38,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course>
     @Resource
     OrdersService ordersService;
 
-    public IPage<CourseForShow> getCourseListByPage(Integer currentPage, Integer pageSize,String courseType){
+    public IPage<CourseForShow> getCourseListByPage(Integer currentPage, Integer pageSize,String courseType,Integer teacherId){
         QueryWrapper<Course> wrapper = new QueryWrapper<>();
         if (courseType == null || "".equals(courseType)){
-            wrapper.orderByDesc("create_time");
+            wrapper.eq("teacher_id",teacherId).orderByDesc("create_time");
         }else {
             wrapper.eq("course_type",courseType).eq("course_status","上架").orderByDesc("create_time");
         }

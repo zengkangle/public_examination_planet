@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gcu.public_examination_planet.domain.User;
 import com.gcu.public_examination_planet.dto.LoginUser;
+import com.gcu.public_examination_planet.dto.PlusUser;
 import com.gcu.public_examination_planet.dto.SimpleUser;
 
 import java.util.Map;
@@ -19,6 +20,8 @@ public interface UserService extends IService<User> {
     String register(User registerUser);
 
     SimpleUser selectUserById(Integer userId);
+
+    PlusUser getPlusUserMsg(Integer userId);
 
     IPage<User> getUserListByPage(Integer currentPage, Integer pageSize);
 }

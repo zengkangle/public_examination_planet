@@ -2,8 +2,10 @@ package com.gcu.public_examination_planet.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.public_examination_planet.common.Result;
+import com.gcu.public_examination_planet.domain.Barrage;
 import com.gcu.public_examination_planet.domain.Course;
 import com.gcu.public_examination_planet.domain.Video;
+import com.gcu.public_examination_planet.service.BarrageService;
 import com.gcu.public_examination_planet.service.CourseService;
 import com.gcu.public_examination_planet.service.VideoService;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class VideoController {
     @Resource
     CourseService courseService;
 
+    @Resource
+    BarrageService barrageService;
+
     /**
      * 保存课程视频
      * @param video
@@ -38,6 +43,7 @@ public class VideoController {
         Course course = courseService.getOne(wrapper);
         if (video.getCoursePage()<=course.getCoursePageAmount()){
             video.setVideoStatus("审核中");
+            barrageService.remove(new QueryWrapper<Barrage>().eq("video_id",video.getVideoId()));
             videoService.update(video,new QueryWrapper<Video>().eq("course_id",video.getCourseId()).eq("course_page",video.getCoursePage()));
         }else {
             course.setCoursePageAmount(course.getCoursePageAmount()+1);
@@ -54,8 +60,8 @@ public class VideoController {
      * @return
      */
     @GetMapping("/getCheckVideoList")
-    public Result getCheckVideoList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize) {
-        return Result.success(videoService.getCheckVideoList(currentPage,pageSize));
+    public Result getCheckVideoList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,Integer teacherId) {
+        return Result.success(videoService.getCheckVideoList(currentPage,pageSize,teacherId));
     }
 
     /**

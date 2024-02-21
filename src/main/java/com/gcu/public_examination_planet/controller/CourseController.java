@@ -56,8 +56,8 @@ public class CourseController {
      * @return
      */
     @GetMapping("/getCourseList")
-    public Result getCourseList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,String courseType) {
-        return Result.success(courseService.getCourseListByPage(currentPage,pageSize,courseType));
+    public Result getCourseList(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize,String courseType,Integer teacherId) {
+        return Result.success(courseService.getCourseListByPage(currentPage,pageSize,courseType,teacherId));
     }
 
     /**

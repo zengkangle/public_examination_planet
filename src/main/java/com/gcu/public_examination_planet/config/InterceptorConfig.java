@@ -15,8 +15,26 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor).addPathPatterns("/**").excludePathPatterns("/user/**", "/alipay/**",
-                "/files/**", "/chat/**", "/follow/**", "/liveroom/**", "/turnurl/**", "/msg/**","/worktime/**");
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/**").excludePathPatterns(
+                "/course/getCourseList",
+                "/article/getArticleListOfType",
+                "/article/getArticleInfo",
+                "/barrage/getBarrageList",
+                "/alipay/**",
+                "/files/**",
+                "/comment/getRateByPage",
+                "/live/getLiveList",
+                "/tag/getTagsById",
+                "/teacher/getSimpleTeacherList",
+                "/teacher/getTeacherById",
+                "/user/login",
+                "/user/register",
+                "/weibo/showWeiboList",
+                "/weibo/showWeiboCommentList",
+                "/weibo/getRecentReplyUserName",
+                "/weibo/getReplyList",
+                "/video/getCourseVideoList"
+        );
     }
 
 }

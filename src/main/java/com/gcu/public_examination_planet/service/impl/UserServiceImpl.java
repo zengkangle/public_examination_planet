@@ -5,17 +5,24 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gcu.public_examination_planet.common.Constants;
+import com.gcu.public_examination_planet.domain.Tag;
+import com.gcu.public_examination_planet.domain.Teacher;
 import com.gcu.public_examination_planet.domain.User;
 import com.gcu.public_examination_planet.dto.LoginUser;
+import com.gcu.public_examination_planet.dto.PlusUser;
 import com.gcu.public_examination_planet.dto.SimpleUser;
 import com.gcu.public_examination_planet.exception.ServiceException;
 import com.gcu.public_examination_planet.mapper.UserMapper;
+import com.gcu.public_examination_planet.service.TagService;
+import com.gcu.public_examination_planet.service.TeacherService;
 import com.gcu.public_examination_planet.service.UserService;
 import com.gcu.public_examination_planet.utils.TokenUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +38,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    TeacherService teacherService;
+
+    @Resource
+    TagService tagService;
 
     public LoginUser login(Map<String, Object> loginMap){
         User user = getOne(new QueryWrapper<User>().eq("user_phone", loginMap.get("userPhone")));
@@ -50,6 +63,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new ServiceException(Constants.CODE_600.getCode(), "账号错误，请重新输入！");
         }
 
+    }
+
+    public PlusUser getPlusUserMsg(Integer userId){
+        User user = getOne(new QueryWrapper<User>().select(User.class,info ->!info.getColumn().equals("user_password")).eq("user_id",userId));
+        PlusUser plusUser = new PlusUser();
+        BeanUtils.copyProperties(user,plusUser);
+        if (plusUser.getTeacherId() != null){
+            Teacher teacher = teacherService.getById(plusUser.getTeacherId());
+            BeanUtils.copyProperties(teacher,plusUser);
+            List<Tag> tagList = tagService.list(new QueryWrapper<Tag>().eq("tag_type", "teacher").eq("teacher_id", plusUser.getTeacherId()));
+            List<String> tagContentList = new ArrayList<>();
+            if (tagList != null && tagList.size() > 0){
+                for (Tag tag : tagList) {
+                    tagContentList.add(tag.getTagContent());
+                }
+            }
+            plusUser.setTags(tagContentList);
+        }
+        return plusUser;
     }
 
     public String register(User registerUser){

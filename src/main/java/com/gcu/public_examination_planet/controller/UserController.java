@@ -70,6 +70,16 @@ public class UserController {
     }
 
     /**
+     * 根据用户id获取个人中心的信息
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getPlusUserMsg")
+    public Result getPlusUserMsg(@RequestParam("userId") Integer userId) {
+        return Result.success(userService.getPlusUserMsg(userId));
+    }
+
+    /**
      * 分页获取用户列表
      * @return
      */

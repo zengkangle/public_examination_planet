@@ -2,6 +2,7 @@ package com.gcu.public_examination_planet.service;
 
 import com.gcu.public_examination_planet.domain.WeiboCommentReply;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.public_examination_planet.dto.WeiboCommentReplyForShow;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface WeiboCommentReplyService extends IService<WeiboCommentReply> {
 
     Integer getRecentReplyUserNameByCommentId(Integer weiboCommentId);
 
-    List<WeiboCommentReply> getReplyList(Integer weiboCommentId);
+    List<WeiboCommentReplyForShow> getReplyList(Integer weiboCommentId);
 }

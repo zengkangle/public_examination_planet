@@ -12,7 +12,7 @@ import com.gcu.public_examination_planet.dto.CourseForShow;
  */
 public interface CourseService extends IService<Course> {
 
-    IPage<CourseForShow> getCourseListByPage(Integer currentPage, Integer pageSize, String courseType);
+    IPage<CourseForShow> getCourseListByPage(Integer currentPage, Integer pageSize, String courseType, Integer teacherId);
 
     IPage<CourseForShow> getMyCourseListByPage(Integer currentPage, Integer pageSize, String courseType, Integer userId);
 }

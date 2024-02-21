@@ -63,16 +63,6 @@ public class WeiboController {
     }
 
     /**
-     * 根据微博id获取图片列表
-     * @param weiboId
-     * @return
-     */
-    @GetMapping("/selectImageList")
-    public Result selectImageList(@RequestParam("weiboId") Integer weiboId) {
-        return Result.success(weiboImgService.selectImageListByWeiboId(weiboId));
-    }
-
-    /**
      * 发布微博评论
      * @param weiboComment
      * @return

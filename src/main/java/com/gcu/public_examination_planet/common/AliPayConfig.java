@@ -24,4 +24,6 @@ public class AliPayConfig {
 
     private String returnUrl;
 
+    private String returnUrl2;
+
 }
