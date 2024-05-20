@@ -36,6 +36,7 @@ public class OrderController {
             if (orderByVip == null){
                 orders.setOrderCode(IdUtil.simpleUUID());
                 ordersService.save(orders);
+                return Result.success(orders);
             }
             return Result.success(orderByVip);
         }

@@ -6,8 +6,7 @@ import com.gcu.public_examination_planet.domain.User;
 import com.gcu.public_examination_planet.dto.LoginUser;
 import com.gcu.public_examination_planet.dto.PlusUser;
 import com.gcu.public_examination_planet.dto.SimpleUser;
-
-import java.util.Map;
+import com.gcu.public_examination_planet.vo.UserVo;
 
 /**
  * @author HealMe
@@ -15,7 +14,7 @@ import java.util.Map;
  * @createDate 2024-01-27 15:43:21
  */
 public interface UserService extends IService<User> {
-    LoginUser login(Map<String, Object> loginMap);
+    LoginUser login(UserVo userVo);
 
     String register(User registerUser);
 

@@ -17,13 +17,13 @@ import com.gcu.public_examination_planet.service.TagService;
 import com.gcu.public_examination_planet.service.TeacherService;
 import com.gcu.public_examination_planet.service.UserService;
 import com.gcu.public_examination_planet.utils.TokenUtils;
+import com.gcu.public_examination_planet.vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,10 +45,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Resource
     TagService tagService;
 
-    public LoginUser login(Map<String, Object> loginMap){
-        User user = getOne(new QueryWrapper<User>().eq("user_phone", loginMap.get("userPhone")));
+    public LoginUser login(UserVo userVo){
+        User user = getOne(new QueryWrapper<User>().eq("user_phone", userVo.getUserPhone()));
         if (user != null) {
-            if (user.getUserPassword().equals(loginMap.get("userPassword"))) {
+            if (user.getUserPassword().equals(userVo.getUserPassword())) {
                 LoginUser loginUser = new LoginUser();
                 //将user和loginUser相同的属性赋值
                 BeanUtils.copyProperties(user, loginUser);

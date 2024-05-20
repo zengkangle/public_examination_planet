@@ -42,6 +42,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course>
         QueryWrapper<Course> wrapper = new QueryWrapper<>();
         if (courseType == null || "".equals(courseType)){
             wrapper.eq("teacher_id",teacherId).orderByDesc("create_time");
+        }else if ("all".equals(courseType)){
+            wrapper.orderByDesc("create_time");
         }else {
             wrapper.eq("course_type",courseType).eq("course_status","上架").orderByDesc("create_time");
         }

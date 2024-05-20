@@ -14,10 +14,10 @@ import com.gcu.public_examination_planet.service.TagService;
 import com.gcu.public_examination_planet.service.TeacherService;
 import com.gcu.public_examination_planet.service.UserService;
 import com.gcu.public_examination_planet.vo.UserPlus;
+import com.gcu.public_examination_planet.vo.UserVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author HealMe
@@ -41,12 +41,12 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param loginMap
+     * @param userVo
      * @return
      */
     @PostMapping("/login")
-    public Result login(@RequestBody Map<String, Object> loginMap){
-        return Result.success(userService.login(loginMap));
+    public Result login(@RequestBody UserVo userVo){
+        return Result.success(userService.login(userVo));
     }
 
     /**
